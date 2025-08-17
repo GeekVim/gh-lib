@@ -1,0 +1,26 @@
+name: "Update Repo"
+description: "Update the repository with the latest changes"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        path: "repo"
+    - uses: GeekVim/gh-lib/neovim@main
+    - uses: actions/checkout@v4
+      with:
+        repository: "GeekVim/gh-lib"
+        path: update
+    - name: Update Repo
+      shell: bash
+      working-directory: update
+      env:
+        BUILD_REPO: ${{ github.repository }}
+        BUILD_TARGET: "../repo"
+      run: ./scripts/update
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v6
+      with:
+        path: "repo"
+        commit-message: "chore(update): update repository"
+        title: "chore(update): update repository"

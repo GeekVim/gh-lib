@@ -1,0 +1,99 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: no-commit-to-branch
+        args:
+          - --branch=main
+          - --branch=master
+          - --pattern=version/.*
+          - --pattern=release/.*
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: check-case-conflict
+      - id: check-illegal-windows-names
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-vcs-permalinks
+      - id: fix-byte-order-marker
+      - id: trailing-whitespace
+        args:
+          - --markdown-linebreak-ext=md
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args:
+          - --fix=lf
+
+  - repo: https://github.com/jorisroovers/gitlint
+    rev:  v0.19.1
+    hooks:
+    -   id: gitlint
+    -   id: gitlint-ci
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-json
+      - id: pretty-format-json
+        files: ^data/schemas/
+        args:
+          - --autofix
+          - --top-keys=$schema,$id,,title,description,type,required,properties
+      - id: pretty-format-json
+        exclude: ^data/schemas/
+        args:
+          - --autofix
+          - --no-sort-keys
+          - --top-keys=data,id,type,attributes,links,relationships
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-toml
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        exclude: ^templates/
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-xml
+
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.13
+    hooks:
+      - id: mdformat
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.11.0-1
+    hooks:
+      - id: shfmt
+
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v2.1.0
+    hooks:
+      - id: stylua

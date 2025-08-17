@@ -1,0 +1,18 @@
+name: PR Title
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  pull-requests: read
+
+jobs:
+  pr-title:
+    uses: GeekVim/gh-lib/.github/workflows/pr.yml@main
+    secrets: inherit

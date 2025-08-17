@@ -1,0 +1,13 @@
+*.log
+/.repro
+/.tests
+/build
+/debug
+/doc/tags
+foo.*
+node_modules
+.pnp.cjs
+/.yarn/*
+!/.yarn/plugins
+!/.yarn/releases
+tt.*

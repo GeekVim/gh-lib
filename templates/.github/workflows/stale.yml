@@ -1,0 +1,11 @@
+name: Stale Issues & PRs
+
+on:
+  schedule:
+    - cron: "30 1 * * *"
+
+jobs:
+  stale:
+    if: contains(fromJSON('["deriamis", "GeekVim"]'), github.repository_owner)
+    uses: GeekVim/gh-lib/.github/workflows/stale.yml@main
+    secrets: inherit
