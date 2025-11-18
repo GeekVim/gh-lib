@@ -15,7 +15,7 @@ jobs:
       - name: Update Repo Settings
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.CLEANUP_TOKEN }} # Use the secret you created
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const script = require('./scripts/update.js')
             script({github, context})
