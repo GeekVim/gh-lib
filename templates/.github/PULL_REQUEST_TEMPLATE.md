@@ -13,5 +13,3 @@
 ## Screenshots
 
 <!-- Add screenshots of the changes if applicable. -->
-
-${checklist}
