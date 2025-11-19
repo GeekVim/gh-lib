@@ -99,6 +99,8 @@ jobs:
 
   docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     timeout-minutes: 5
     needs: [config, tests, build]
     if: ${{ !failure() && inputs.docs && inputs.repo == github.repository && github.ref == 'refs/heads/main' }}
