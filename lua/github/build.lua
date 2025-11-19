@@ -3,7 +3,7 @@ local Util = require("github.util")
 local M = {}
 
 M.keep = {
-  "tests/minit.lua",
+  "tests/busted.lua",
   "LICENSE.md",
 }
 
@@ -47,7 +47,6 @@ M.props = {
 M.repos = {
   "GeekVim/GeekVim",
   "GeekVim/starter",
-  "GeekVim/gh-lib",
 }
 
 ---@param dir string
@@ -114,7 +113,7 @@ function M.update(repo)
   local parts = vim.split(repo, "/")
   assert(#parts == 2, "Invalid repo: " .. repo)
 
-  local target = vim.env.BUILD_TARGET or ("~/projects/" .. parts[2])
+  local target = vim.env.BUILD_TARGET or ("~/Projects/GeekVim/" .. parts[2])
   local dir = vim.fs.normalize(target)
 
   assert(vim.uv.fs_stat(dir), "Directory does not exist: " .. dir)

@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 repos=$(gh repo list --source --no-archived --json nameWithOwner --jq ".[].nameWithOwner" | rg nvim | sort)
 repos="$repos GeekVim/gh-lib GeekVim/GeekVim"
