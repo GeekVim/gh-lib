@@ -34,7 +34,7 @@ module.exports = async ({ github, context }) => {
     console.log(`Updating ${repo.full_name}...`);
     // Enable repository settings
     await github.rest.repos.update({
-      owner: repo.owner,
+      owner: context.repo.owner,
       repo: repo.name,
       allow_update_branch: true,
       has_discussions: true,
@@ -48,7 +48,7 @@ module.exports = async ({ github, context }) => {
 
     // Update branch protection
     await github.rest.repos.updateBranchProtection({
-      owner: repo.owner,
+      owner: context.repo.owner,
       repo: repo.name,
       branch: repo.default_branch,
       allow_deletions: false,
@@ -67,7 +67,7 @@ module.exports = async ({ github, context }) => {
 
     // Labels
     const labels = await github.rest.issues.listLabelsForRepo({
-      owner: repo.owner,
+      owner: context.repo.owner,
       repo: repo.name,
     });
     for (const label of LABELS) {
@@ -82,7 +82,7 @@ module.exports = async ({ github, context }) => {
       }
       if (existing) {
         await github.rest.issues.updateLabel({
-          owner: repo.owner,
+          owner: context.repo.owner,
           repo: repo.name,
           name: label.name,
           new_name: label.name,
@@ -91,7 +91,7 @@ module.exports = async ({ github, context }) => {
       } else {
         try {
           await github.rest.issues.createLabel({
-            owner: repo.owner,
+            owner: context.repo.owner,
             repo: repo.name,
             name: label.name,
             color: label.color,
