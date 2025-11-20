@@ -82,7 +82,7 @@ module.exports = async ({ github, context }) => {
       }
       if (existing) {
         await github.rest.issues.updateLabel({
-          owner repo.owner,
+          owner: repo.owner,
           repo: repo.name,
           name: label.name,
           new_name: label.name,
@@ -91,7 +91,7 @@ module.exports = async ({ github, context }) => {
       } else {
         try {
           await github.rest.issues.createLabel({
-            owner, repo.owner,
+            owner: repo.owner,
             repo: repo.name,
             name: label.name,
             color: label.color,
