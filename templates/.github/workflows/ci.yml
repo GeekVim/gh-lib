@@ -9,6 +9,8 @@ jobs:
   ci:
     uses: GeekVim/gh-lib/.github/workflows/ci.yml@main
     secrets: inherit
+    permissions:
+      contents: write
     with:
       plugin: ${name}
       repo: ${repo}
