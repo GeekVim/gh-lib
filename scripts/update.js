@@ -1,11 +1,22 @@
 // @ts-check
 /** @param {import('github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 module.exports = async ({ github, context }) => {
-  const repos = await github.paginate("GET /user/repos", {
-    affiliation: "owner",
-    visibility: "public",
-    per_page: 100,
-  });
+  const owner = context.payload.organization ?? context.repo.owner;
+
+  const { data: repos } =
+    (context.payload.organization !== null) ?
+      await github.rest.repos.listForOrg({
+        org: context.payload.organization,
+        type: 'all',
+        per_page: 100
+      })
+    :
+      await github.rest.repos.listForUser({
+        username: context.repo.owner,
+        type: 'all',
+        per_page: 100
+      });
+
 
   const LABELS = [
     { name: "stale", color: "F9D0C4" },
@@ -16,16 +27,15 @@ module.exports = async ({ github, context }) => {
   ];
 
   for (const repo of repos) {
-    const [owner, name] = repo.full_name.split("/");
-    if (!name.includes("nvim") || repo.fork || repo.archived || repo.disabled) {
+    if (repo.fork || repo.archived || repo.disabled) {
       continue;
     }
 
     console.log(`Updating ${repo.full_name}...`);
     // Enable repository settings
     await github.rest.repos.update({
-      repo: name,
-      owner: owner,
+      owner: repo.owner,
+      repo: repo.name,
       allow_update_branch: true,
       has_discussions: true,
       allow_squash_merge: true,
@@ -36,33 +46,29 @@ module.exports = async ({ github, context }) => {
       squash_merge_commit_message: "PR_BODY",
     });
 
-    const branch = repo.default_branch;
     // Update branch protection
-    await github.request(
-      `PUT /repos/${owner}/${name}/branches/${branch}/protection`,
-      {
-        headers: {
-          accept: "application/vnd.github.v3+json",
-        },
-        allow_deletions: false,
-        allow_force_pushes: false,
-        allow_fork_syncing: false,
-        block_creations: false,
-        enforce_admins: false,
-        lock_branch: false,
-        required_conversation_resolution: false,
-        required_linear_history: false,
-        required_signatures: false,
-        required_status_checks: null,
-        required_pull_request_reviews: null,
-        restrictions: null,
-      },
-    );
+    await github.rest.repos.updateBranchProtection({
+      owner: repo.owner,
+      repo: repo.name,
+      branch: repo.default_branch,
+      allow_deletions: false,
+      allow_force_pushes: false,
+      allow_fork_syncing: false,
+      block_creations: false,
+      enforce_admins: false,
+      lock_branch: false,
+      required_conversation_resolution: false,
+      required_linear_history: false,
+      required_signatures: false,
+      required_status_checks: null,
+      required_pull_request_reviews: null,
+      restrictions: null,
+    });
 
     // Labels
     const labels = await github.rest.issues.listLabelsForRepo({
-      owner,
-      repo: name,
+      owner: repo.owner,
+      repo: repo.name,
     });
     for (const label of LABELS) {
       const existing = labels.data.find(
@@ -76,8 +82,8 @@ module.exports = async ({ github, context }) => {
       }
       if (existing) {
         await github.rest.issues.updateLabel({
-          owner,
-          repo: name,
+          owner repo.owner,
+          repo: repo.name,
           name: label.name,
           new_name: label.name,
           color: label.color,
@@ -85,8 +91,8 @@ module.exports = async ({ github, context }) => {
       } else {
         try {
           await github.rest.issues.createLabel({
-            owner,
-            repo: name,
+            owner, repo.owner,
+            repo: repo.name,
             name: label.name,
             color: label.color,
           });
