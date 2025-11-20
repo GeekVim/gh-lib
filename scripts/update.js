@@ -38,12 +38,10 @@ module.exports = async ({ github, context }) => {
         path: '', // Request contents of the root directory
       });
       if (contents && contents.length == 0) {
-        console.log('Repository appears to be empty (no contents found).');
         continue;
       }
     } catch (error) {
       if (error.status === 404) {
-        console.log('Repository appears to be empty (404 Not Found for content).');
         continue;
       } else {
         console.error('Error checking repository content:', error);
