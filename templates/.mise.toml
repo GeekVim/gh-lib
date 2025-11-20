@@ -1,0 +1,4 @@
+[tools]
+node = { version = "20", postinstall = "corepack enable" }
+pre-commit = "latest"
+stylua = "latest"

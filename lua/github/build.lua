@@ -47,6 +47,38 @@ M.props = {
 M.repos = {
   "GeekVim/GeekVim",
   "GeekVim/starter",
+  "GeekVim/bundle-AI",
+  "GeekVim/bundle-lang-AngularJS",
+  "GeekVim/bundle-lang-Astro",
+  "GeekVim/bundle-lang-Clangd",
+  "GeekVim/bundle-lang-Clojure",
+  "GeekVim/bundle-lang-Elixir",
+  "GeekVim/bundle-lang-Elm",
+  "GeekVim/bundle-lang-Erlang",
+  "GeekVim/bundle-lang-Gleam",
+  "GeekVim/bundle-lang-Go",
+  "GeekVim/bundle-lang-Haskell",
+  "GeekVim/bundle-lang-Java",
+  "GeekVim/bundle-lang-Kotlin",
+  "GeekVim/bundle-lang-Lean",
+  "GeekVim/bundle-lang-Nix",
+  "GeekVim/bundle-lang-Nushell",
+  "GeekVim/bundle-lang-OCaml",
+  "GeekVim/bundle-lang-OmniSharp",
+  "GeekVim/bundle-lang-PHP",
+  "GeekVim/bundle-lang-Python",
+  "GeekVim/bundle-lang-R",
+  "GeekVim/bundle-lang-Rego",
+  "GeekVim/bundle-lang-Ruby",
+  "GeekVim/bundle-lang-Rust",
+  "GeekVim/bundle-lang-Scala",
+  "GeekVim/bundle-lang-Svelte",
+  "GeekVim/bundle-lang-Tailwind",
+  "GeekVim/bundle-lang-TeX",
+  "GeekVim/bundle-lang-Thrift",
+  "GeekVim/bundle-lang-TypeScript",
+  "GeekVim/bundle-lang-Vue",
+  "GeekVim/bundle-lang-Zig",
 }
 
 ---@param dir string
@@ -66,6 +98,11 @@ function M.templates(dir, props)
   local tpl_dir = vim.fs.normalize(Util.me .. "/templates")
   vim.fs.find(function(name, path)
     local tpl = (path .. "/" .. name):sub(#tpl_dir + 2)
+
+    if tpl:find(".git") then
+      return false
+    end
+
     if vim.tbl_contains(M.keep, tpl) and vim.uv.fs_stat(dir .. "/" .. tpl) then
       print(" - skipping", tpl)
       return false

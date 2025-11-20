@@ -1,0 +1,3 @@
+[submodule "lua-luv"]
+	path = templates/vendor/luv
+	url = git@github.com:LuaCATS/luv.git
