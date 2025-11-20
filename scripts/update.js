@@ -45,7 +45,7 @@ module.exports = async ({ github, context }) => {
         continue;
       } else {
         console.error('Error checking repository content:', error);
-        core.setFailed(`Failed to check repository content: ${error.message}`);
+        continue;
       }
     }
 
