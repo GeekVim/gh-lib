@@ -31,6 +31,26 @@ module.exports = async ({ github, context }) => {
       continue;
     }
 
+    try {
+      const { data: contents } = await github.rest.repos.getContent({
+        owner: context.repo.owner,
+        repo: repo.name,
+        path: '', // Request contents of the root directory
+      });
+      if (contents && contents.length == 0) {
+        console.log('Repository appears to be empty (no contents found).');
+        continue;
+      }
+    } catch (error) {
+      if (error.status === 404) {
+        console.log('Repository appears to be empty (404 Not Found for content).');
+        continue;
+      } else {
+        console.error('Error checking repository content:', error);
+        core.setFailed(`Failed to check repository content: ${error.message}`);
+      }
+    }
+
     console.log(`Updating ${repo.full_name}...`);
     // Enable repository settings
     await github.rest.repos.update({
