@@ -6,7 +6,7 @@ module.exports = async ({ github, context }) => {
   const { data: repos } =
     (context.payload.organization !== null) ?
       await github.rest.repos.listForOrg({
-        org: context.payload.organization,
+        org: context.repo.owner,
         type: 'all',
         per_page: 100
       })
