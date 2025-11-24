@@ -3,6 +3,8 @@ local Util = require("github.util")
 local M = {}
 
 M.keep = {
+  ".github",
+  "init.lua",
   "tests/busted.lua",
   "LICENSE.md",
 }
@@ -99,7 +101,7 @@ function M.templates(dir, props)
   vim.fs.find(function(name, path)
     local tpl = (path .. "/" .. name):sub(#tpl_dir + 2)
 
-    if tpl:find(".git") then
+    if tpl:find("^%.git/") then
       return false
     end
 
@@ -108,15 +110,11 @@ function M.templates(dir, props)
       return false
     end
 
-    if tpl:find(".github") and dir:find("/github$") then
+    if (tpl:find("^scripts/") or tpl:find("^tests/")) and not have_tests then
       print(" - skipping", tpl)
       return false
     end
 
-    if (tpl:find("scripts") or tpl:find("tests")) and not have_tests then
-      print(" - skipping", tpl)
-      return false
-    end
     props = vim.deepcopy(props)
     for k, v in pairs(M.props[props.name] or {}) do
       props[k] = v
@@ -130,8 +128,9 @@ function M.templates(dir, props)
       top = "",
       checks = "",
     })
+
     Util.template(dir, tpl, props)
-    if tpl:find("scripts") then
+    if tpl:find("^scripts$") then
       vim.uv.fs_chmod(dir .. "/" .. tpl, tonumber("755", 8))
     end
   end, { path = tpl_dir, type = "file" })
