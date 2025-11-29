@@ -12,7 +12,9 @@ repos:
       - id: check-merge-conflict
       - id: check-added-large-files
       - id: check-executables-have-shebangs
+        exclude: ^vendor/
       - id: check-shebang-scripts-are-executable
+        exclude: ^vendor/
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -26,12 +28,17 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-vcs-permalinks
+        exclude: ^vendor/
       - id: fix-byte-order-marker
+        exclude: ^vendor/
       - id: trailing-whitespace
+        exclude: ^vendor/
         args:
           - --markdown-linebreak-ext=md
       - id: end-of-file-fixer
+        exclude: ^vendor/
       - id: mixed-line-ending
+        exclude: ^vendor/
         args:
           - --fix=lf
 
@@ -56,7 +63,7 @@ repos:
           - --autofix
           - --top-keys=$schema,$id,,title,description,type,required,properties
       - id: pretty-format-json
-        exclude: ^data/schemas/
+        exclude: ^(vendor|data/schemas)/
         args:
           - --autofix
           - --no-sort-keys
@@ -66,34 +73,40 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-toml
+        exclude: ^vendor/
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-yaml
-        exclude: ^templates/
+        exclude: ^(vendor|templates)/
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-xml
+        exclude: ^vendor/
 
   - repo: https://github.com/executablebooks/mdformat
     rev: 1.0.0
     hooks:
       - id: mdformat
+        exclude: ^vendor/
 
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.11.0
     hooks:
       - id: shellcheck
+        exclude: ^vendor/
 
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.12.0-2
     hooks:
       - id: shfmt
+        exclude: ^vendor/
 
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v2.3.1
     hooks:
       - id: stylua
+        exclude: ^vendor/
